@@ -16,6 +16,8 @@ const queue = new SqliteMessageQueue(new DatabaseSync(resolve(dataDir, "queue.sq
 const bot = createBot<void>({
   username: "subway",
   name: "써브웨이 랜덤 추천봇",
+  icon: new URL("https://pick.mustard.blog/avatar.png"),
+  image: new URL("https://pick.mustard.blog/header.png"),
   summary: text`한국 써브웨이 조합을 랜덤으로 제안하는 비공식 팬 봇입니다.`,
   kv,
   queue,
