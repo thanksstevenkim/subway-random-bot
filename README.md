@@ -64,6 +64,21 @@ npm run demo
 
 이 제한은 봇의 **답글 생성량**을 통제합니다. HTTP 요청 폭주나 인프라 수준의 DDoS 방어를 대체하지 않습니다.
 
+## 공식 재료 메뉴 일일 자동 점검
+
+- GitHub Actions: `.github/workflows/menu-ingredients-daily.yml`
+- 일정: 매일 **09:17 KST/JST** (UTC 00:17), 필요하면 `workflow_dispatch`로 수동 실행
+- 한국 써브웨이 [공식 재료소개](https://devm.subway.co.kr/more/freshInfo)를 확인하고 `data/menu.json`의 **빵·야채·치즈·소스·추가 토핑**을 비교
+- 신규 또는 미노출 항목이 발견되면 `data/menu.json` 수정안과 `reports/menu-ingredient-review.md` 설명을 담은 **검토용 PR** 생성·갱신
+- 공식 페이지 오류·대규모 목록 변화·추출 구조 변화가 있으면 **안전 중단**. 오류를 단종으로 취급하지 않음
+- PR은 사람이 근거를 확인한 후 병합해야 하며, 이 작업은 **운영 서버 배포를 자동으로 수행하지 않음**
+
+샌드위치·사이드·음료는 이 첫 스캐너에 **포함되지 않습니다**. 공식 샌드위치 페이지는 외부 조회 시 HTTP 403 응답 사례가 있어 실제 수집 가능 여부를 확인한 다음 확장해야 합니다. 메뉴 데이터는 여전히 `partially-verified`입니다.
+
+로컬 파서 검증: `python3 -m unittest discover -s tests -v`
+
+GitHub Actions가 PR을 만들려면 저장소 설정에서 **Actions → General → Workflow permissions → Allow GitHub Actions to create and approve pull requests**가 허용되어 있어야 합니다. 설정에 따라 사용자의 추가 조정이 필요할 수 있습니다.
+
 ## 다음 단계
 
 1. 고정 봇 계정에서 멘션·답글 및 제한 동작 확인
