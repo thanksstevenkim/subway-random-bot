@@ -79,6 +79,17 @@ npm run demo
 
 GitHub Actions가 PR을 만들려면 저장소 설정에서 **Actions → General → Workflow permissions → Allow GitHub Actions to create and approve pull requests**가 허용되어 있어야 합니다. 설정에 따라 사용자의 추가 조정이 필요할 수 있습니다.
 
+### 공식 샌드위치·사이드·음료 출처 점검 (2026-11-18)
+
+[GitHub Actions 실행 #44329344146](https://github.com/thanksstevenkim/subway-random-bot/actions/runs/44329344146)에서 실제 GitHub 호스티드 러너가 다음을 확인했습니다.
+
+- 샌드위치: `https://www.subway.co.kr/menuList/sandwich` → **HTTP 403**
+- 사이드·음료: `https://www.subway.co.kr/menuList/sidedrink` → **HTTP 403**
+- 재료소개: **32개 추출 및 기존 데이터와 일치** (변경 PR 불필요)
+- `scripts/probe_menu_catalog.py`는 매일 읽기 전용으로 HTTP 접근 가능 여부만 확인하며, 403을 단종 증거로 취급하지 않습니다.
+
+**미완료:** 샌드위치·사이드·음료의 신규/단종 판정용 신뢰할 수 있는 전국 공통 메뉴 원본과 파서 확보. 써브웨이 공식 공지·배달업체 메뉴는 일부 제품/매장 정보일 수 있으므로 전국 단종의 자동 판단 근거로 쓰지 않습니다. 이 세 범주에서 자동 갱신이 완료됐다고 기록하거나 주장하지 않습니다.
+
 ## 다음 단계
 
 1. 고정 봇 계정에서 멘션·답글 및 제한 동작 확인
