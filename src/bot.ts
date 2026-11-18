@@ -42,9 +42,7 @@ bot.onMention = async (session, message) => {
     const visibility =
       message.visibility === "public" || message.visibility === "unlisted"
         ? "unlisted"
-        : message.visibility === "followers"
-          ? "followers"
-          : "direct";
+        : "direct";
     await message.reply(text`${mention(message.actor)}\n${generateRecommendation()}`, { visibility });
   } catch (error) {
     // Keep this claim: a failed request might already have delivered its reply.
