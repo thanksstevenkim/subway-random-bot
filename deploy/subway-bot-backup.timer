@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Subway random bot SQLite backup at 05:30 JST
+
+[Timer]
+OnCalendar=*-*-* 20:30:00 UTC
+Persistent=true
+AccuracySec=1min
+Unit=subway-bot-backup.service
+
+[Install]
+WantedBy=timers.target
