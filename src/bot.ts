@@ -38,7 +38,14 @@ bot.onMention = async (session, message) => {
   if (decision !== "accepted") return;
 
   try {
-    await message.reply(text`${mention(message.actor)}\n${generateRecommendation()}`);
+    // Unlisted keeps public calls off public timelines. Never expose private calls.
+    const visibility =
+      message.visibility === "public" || message.visibility === "unlisted"
+        ? "unlisted"
+        : message.visibility === "followers"
+          ? "followers"
+          : "direct";
+    await message.reply(text`${mention(message.actor)}\n${generateRecommendation()}`, { visibility });
   } catch (error) {
     // Keep this claim: a failed request might already have delivered its reply.
     limiter.finish(messageId, "failed");
