@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fedify/botkit": "^0.5.9",
+    "@fedify/sqlite": "^2.4.6",
     "srvx": "^1.0.8"
   },
   "devDependencies": {
