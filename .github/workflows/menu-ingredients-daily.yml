@@ -33,6 +33,9 @@ jobs:
       - name: Read official ingredient list and compare
         run: python3 scripts/check_ingredients.py
 
+      - name: Probe official sandwich and side/drink pages (read-only)
+        run: python3 scripts/probe_menu_catalog.py
+
       - name: Open/update a review PR when needed
         uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
         with:
