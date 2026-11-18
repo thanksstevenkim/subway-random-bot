@@ -51,7 +51,7 @@ bot.onMention = async (session, message) => {
       message.visibility === "public" || message.visibility === "unlisted"
         ? "unlisted"
         : "direct";
-    await message.reply(text`${mention(message.actor)}\n${generateRecommendation()}`, { visibility });
+    await message.reply(text`${mention(message.actor)}\n\n${generateRecommendation()}`, { visibility });
   } catch (error) {
     // Keep this claim: a failed request might already have delivered its reply.
     limiter.finish(messageId, "failed");
