@@ -10,6 +10,7 @@ RUN npm ci --no-fund \
 
 COPY --chown=node:node src ./src
 COPY --chown=node:node data ./data
+COPY --chown=node:node public ./public
 COPY --chown=node:node tsconfig.json ./
 
 USER node
