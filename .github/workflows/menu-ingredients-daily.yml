@@ -1,6 +1,10 @@
 name: Subway Korea ingredient menu review
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/menu-ingredients-daily.yml'
   schedule:
     # Every day at 09:17 JST/KST (GitHub cron is UTC).
     - cron: '17 0 * * *'
