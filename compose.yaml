@@ -1,0 +1,24 @@
+name: subway-random-bot
+
+services:
+  bot:
+    build:
+      context: .
+    restart: unless-stopped
+    init: true
+    environment:
+      NODE_ENV: production
+      BOT_DATA_DIR: /app/.bot-data
+      # Enable only behind a trusted, correctly configured local reverse proxy.
+      BEHIND_PROXY: "true"
+    ports:
+      # Only Nginx on this host should reach the bot directly.
+      - "127.0.0.1:18080:8000"
+    volumes:
+      # Never replace this data without an explicit backup/recovery plan.
+      - "./.bot-data:/app/.bot-data"
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    security_opt:
+      - no-new-privileges:true
