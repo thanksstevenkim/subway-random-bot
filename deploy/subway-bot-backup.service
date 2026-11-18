@@ -1,0 +1,18 @@
+[Unit]
+Description=Backup Subway random bot SQLite databases to private R2
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/subway-random-bot/app
+ExecStart=/bin/bash /opt/subway-random-bot/app/deploy/backup.sh
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=30min

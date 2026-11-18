@@ -24,7 +24,7 @@ npm run demo
 - `.bot-data/federation.sqlite`: 봇의 서명 키, 연합 정보, 게시물 및 팔로우 데이터
 - `.bot-data/queue.sqlite`: 영구 메시지 큐
 - `.bot-data/rate-limit.sqlite`: 멘션 중복·호출 제한 기록 (독립 SQLite 파일)
-- `BOT_DATA_DIR`: 두 파일을 저장할 디렉터리 (기본값 `./.bot-data`)
+- `BOT_DATA_DIR`: 세 SQLite 파일을 저장할 디렉터리 (기본값 `./.bot-data`)
 - `.bot-data/`는 `.gitignore`에 포함되며, **데이터베이스 파일을 GitHub에 올리지 마세요.**
 
 로컬 BotKit 서버 실행 명령은 `npm run dev`입니다. 임시 HTTPS 터널이나 다른 연합 계정을 만들지 마세요. 운영 중인 고정 계정과 별개로 로컬 서버만 실행해도 새 연합 계정이 인터넷에 생성되는 것은 아닙니다.
@@ -93,6 +93,20 @@ GitHub Actions가 PR을 만들려면 저장소 설정에서 **Actions → Genera
 ## 추천 메뉴 범위
 
 샌드위치는 한국에서 평소 주문 가능한 품목 위주로 선별하며, 2026-11-18 기준 **22종**입니다. 기간 한정으로 확인된 잠봉 플러스는 제외했습니다. 전국 공통 상시 판매를 모두 확인한 것은 아니므로, 분류 근거와 보류 항목은 [`docs/menu-scope.md`](docs/menu-scope.md)에 기록합니다.
+
+## 봇 계정 백업 자동화
+
+운영 봇의 서명 키 및 영구 기록 보호를 위해 기존 비공개 R2 `mustard-db-backups`에 **독립 경로로** 세 SQLite 파일을 보관하는 도구를 추가했습니다. SQLite 온라인 백업 API를 사용하므로 봇 컨테이너 재시작은 필요하지 않습니다.
+
+- 시간: **매일 05:30 JST**, Mastodon 04:00 백업과 분리
+- 대상: `federation.sqlite`, `queue.sqlite`, `rate-limit.sqlite`
+- 스냅샷 DB 무결성 검사 및 SHA256 매니페스트 생성, R2 신규 객체 업로드·크기 확인
+- 기존 R2 백업 경로·기존 아카이브는 건드리지 않음. **자동 삭제·기한 만료 로테이션 아직 없음**
+- 실제 호스트에 적용하기 전 읽기 전용 사전 점검과 1회 수동 성공 확인 필요
+- 배포 및 복구 유의사항: [백업 운영 절차](docs/backup-operations.md)
+- 로컬 단위 테스트: `python3 -m unittest discover -s tests -p 'test_backup_sqlite.py' -v`
+
+이번 변경의 완료 범위는 **코드·타이머 준비**입니다. 최초 수동 업로드와 systemd 타이머 활성화는 운영 서버에서 별도로 수행·확인해야 합니다.
 
 ## 다음 단계
 
