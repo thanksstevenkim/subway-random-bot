@@ -16,4 +16,5 @@ COPY --chown=node:node tsconfig.json ./
 USER node
 EXPOSE 8000
 
-CMD ["./node_modules/.bin/srvx", "serve", "--prod", "--port", "8000", "--entry", "./src/bot.ts"]
+# Make static assets explicit: auto-discovery missed /app/public in production.
+CMD ["./node_modules/.bin/srvx", "serve", "--prod", "--port", "8000", "--static", "/app/public", "--entry", "./src/bot.ts"]
