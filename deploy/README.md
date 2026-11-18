@@ -1,8 +1,8 @@
-# Standalone Docker deployment — preparation only
+# Standalone Docker deployment — pick.mustard.blog
 
 Target account (not yet created): `@subway@pick.mustard.blog`.
 
-This repository intentionally does **not** configure DNS, Nginx, certificates, or start a container. Do not create another temporary federated account. Do not modify the existing Mastodon Compose project.
+The fixed Cloudflare DNS and Nginx HTTPS virtual host were configured on `mustard-server-02` (2026-11-18). This repository does **not** manage DNS or Nginx. Never create another temporary federated account or modify the existing Mastodon Compose project.
 
 ## Planned layout
 
@@ -13,7 +13,7 @@ This repository intentionally does **not** configure DNS, Nginx, certificates, o
 
 Docker runs the bot as the non-root `node` user (UID/GID 1000 in the official Node image). The host data directory must be writable by that user and must never be committed to Git. The `.dockerignore` also excludes the SQLite files from image builds.
 
-## Phase A — prepare files and validate Compose (does not start the bot)
+## Phase A — initial preparation (already completed on 2026-11-18)
 
 After merging the PR and on `mustard-server-02` as `ubuntu`:
 
@@ -29,9 +29,27 @@ cd /opt/subway-random-bot/app
 docker compose config --quiet
 ```
 
-Do not run `docker compose up` yet. The HTTPS origin and proxy behavior must be decided first, and starting the bot could expose a new federated identity if indexed.
+The initial source clone, Compose validation, SQLite directory preparation, Docker image build, DNS and HTTPS configuration were completed separately. Starting the container makes the fixed public bot reachable.
 
-## Phase B — only after the fixed HTTPS domain is configured
+## Phase B — build and start the fixed bot
+
+The deployment script `deploy/deploy.sh` checks the exact host/user/path/remote, clean `main` branch and SQLite directory ownership, fast-forwards `main`, validates Compose, builds the image, starts **only** the `bot` service, then checks WebFinger through the local Nginx HTTPS origin. It never deletes SQLite files and does not modify Nginx, Cloudflare, or Mastodon containers.
+
+For the **first** use only, download the script by updating the existing server checkout:
+
+```bash
+cd /opt/subway-random-bot/app
+git pull --ff-only origin main
+bash deploy/deploy.sh
+```
+
+For **subsequent** deployments, one command is enough:
+
+```bash
+bash /opt/subway-random-bot/app/deploy/deploy.sh
+```
+
+If the WebFinger check fails, the script prints the bot logs and exits nonzero; it intentionally does not perform an automatic rollback or remove any persistent data. HTTP 200 confirms the origin endpoint, **not** end-to-end federation. The first actual mention/reply test is a separate operation on the **same** `@subway@pick.mustard.blog` account.
 
 - Configure `pick.mustard.blog` in Cloudflare and its own Nginx server block, without changing the Mastodon vhost.
 - The proxy must set a trusted fixed Host and HTTPS forwarding headers; reject untrusted client-supplied forwarding values.
