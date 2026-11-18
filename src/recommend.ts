@@ -44,6 +44,7 @@ export function generateRecommendation(): string {
 
   return [
     "🥪 오늘의 써브웨이 랜덤 조합!",
+    "",
     `🥖 샌드위치: ${sandwich} (15cm)`,
     `🍞 빵: ${bread} (${toasted ? "토스팅" : "토스팅 안 함"})`,
     `🧀 치즈: ${cheese}`,
@@ -52,6 +53,7 @@ export function generateRecommendation(): string {
     ...(extra ? [`➕ 추가 토핑: ${extra} (추가 요금 가능)`] : []),
     ...(side ? [`🍪 사이드: ${side}`] : []),
     ...(drink ? [`🥤 음료: ${drink}`] : []),
-    "🎲 다시 호출하면 새 조합을 추천해요!",
+    "",
+    "🎲 새 조합 추천 받으려면 다시 불러주세요!",
   ].join("\n");
 }
