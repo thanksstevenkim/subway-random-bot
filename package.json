@@ -6,7 +6,8 @@
   "scripts": {
     "demo": "tsx src/demo.ts",
     "dev": "srvx serve --port 8000 --entry ./src/bot.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "test:limits": "node --test --experimental-strip-types src/mention-limit.test.ts"
   },
   "dependencies": {
     "@fedify/botkit": "^0.5.9",
