@@ -1,11 +1,11 @@
 import { chmodSync, existsSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
-// The limits are deliberately conservative for a small, volunteer-run bot.
-const COOLDOWN_MS = 5 * 60 * 1_000;
-const DAILY_LIMIT = 20;
-const HOURLY_GLOBAL_LIMIT = 60;
-const MINUTELY_GLOBAL_LIMIT = 10;
+// Limits balance normal random-combination retries with protection from abuse.
+const COOLDOWN_MS = 15 * 1_000;
+const DAILY_LIMIT = 100;
+const HOURLY_GLOBAL_LIMIT = 600;
+const MINUTELY_GLOBAL_LIMIT = 60;
 const HOUR_MS = 60 * 60 * 1_000;
 const MINUTE_MS = 60 * 1_000;
 const DAY_MS = 24 * HOUR_MS;
