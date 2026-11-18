@@ -1,0 +1,20 @@
+{
+  "name": "subway-random-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/demo.ts",
+    "dev": "srvx serve --port 8000 --entry ./src/bot.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fedify/botkit": "^0.5.9",
+    "srvx": "^1.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
